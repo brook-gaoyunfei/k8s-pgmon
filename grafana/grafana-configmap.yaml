@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-configmap-conf
+  namespace: pgmon
 data:
   grafana.ini: |
     [auth.ldap]
