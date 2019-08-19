@@ -68,12 +68,12 @@ spec:
             - mountPath: /dashboard-grafana/k8s-☸-pgmon_node-exporter-docker
               name: k8s-pgmon-node-exporter-docker
               readOnly: false
-            - name: grafana-config
-              mountPath: /etc/grafana/grafana.ini
-            # readOnly: true
+            #- name: grafana-conf
+             # mountPath: /etc/grafana/grafana.ini
+              #readOnly: fause
             - name: grafana-ldap
               mountPath: /etc/grafana/ldap.toml
-              #readOnly: true
+              readOnly: false
           env:
             - name: GF_AUTH_BASIC_ENABLED
               value: "true"
@@ -81,18 +81,17 @@ spec:
               value: "false"
             - name: GF_PATHS_PLUGINS
               value: "/tmp/plugins/"
+            - name: GF_AUTH_LDAP_ENABLED
+              value: "true"
+            - name: GF_AUTH_LDAP_CONFIG_FILE
+              value: "/etc/grafana/ldap2.toml"
+            - name: GF_AUTH_LDAP_ALLOW_SIGN_UP
+              value: "true"
             - name: GF_PATHS_CONFIG
               value: "/etc/grafana/grafana.ini"
-      #       - name: GF_INSTALL_PLUGINS
-      #         value: grafana-piechart-panel
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
-      #      dnsPolicy: "None"
-      #      dnsConfig:
-      #        nameservers:
-      #          - 172.25.52.10
-      #          - 10.10.100.100
       volumes:
         - emptyDir: {}
           name: grafana-storage
@@ -129,11 +128,7 @@ spec:
         - name: k8s-pgmon-node-exporter-docker
           configMap:
             name: k8s-pgmon-node-exporter-docker
-        - name: grafana-conf
-            configMap:
-              name: grafana-configmap-conf
-              defaultMode: 0600
         - name: grafana-ldap
-            configMap:
-              name: grafana-configmap-ldap
-              defaultMode: 0600
+          configMap:
+            name: grafana-configmap-ldap
+            #defaultMode: 0600
